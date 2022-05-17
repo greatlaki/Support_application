@@ -7,6 +7,8 @@ from .models import *
 
 class TicketSerializer(serializers.ModelSerializer):
 
+    author = serializers.SlugRelatedField(slug_field="username", queryset=User.objects.all())
+
     class Meta:
         model = Ticket
         fields = ("id", "author", "title", "desc", "status", "created_date")
@@ -37,7 +39,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         password = validated_data["password"]
         password2 = validated_data["password2"]
         if password != password2:
-            raise serializers.ValidationError({"password": "Passwords don't match"})
+            raise serializers.ValidationError({"password": "Пароли не совпадают"})
         user = User(username=username)
         user.set_password(password)
         user.save()
